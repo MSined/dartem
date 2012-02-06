@@ -23,15 +23,22 @@ namespace DartEm
             playButton.Tapped += playButton_Tapped;
             MenuButtons.Add(playButton);
 
-            // Create two buttons to toggle sound effects and music. This sample just shows one way
-            // of making and using these buttons; it doesn't actually have sound effects or music
-            BooleanButton sfxButton = new BooleanButton("Sound Effects", true);
-            sfxButton.Tapped += sfxButton_Tapped;
-            MenuButtons.Add(sfxButton);
+            // Create Settings Menu
+            Button settingsButton = new Button("Settings");
+            settingsButton.Tapped += settingsButton_Tapped;
+            //ScreenManager.AddScreen(new SettingsMainMenuScreen(), );
+            MenuButtons.Add(settingsButton);
+            
 
-            BooleanButton musicButton = new BooleanButton("Music", true);
-            musicButton.Tapped += musicButton_Tapped;
-            MenuButtons.Add(musicButton);
+            //// Create two buttons to toggle sound effects and music. This sample just shows one way
+            //// of making and using these buttons; it doesn't actually have sound effects or music
+            //BooleanButton sfxButton = new BooleanButton("Sound Effects", true);
+            //sfxButton.Tapped += sfxButton_Tapped;
+            //MenuButtons.Add(sfxButton);
+
+            //BooleanButton musicButton = new BooleanButton("Music", true);
+            //musicButton.Tapped += musicButton_Tapped;
+            //MenuButtons.Add(musicButton);
         }
 
         void playButton_Tapped(object sender, EventArgs e)
@@ -56,9 +63,23 @@ namespace DartEm
             // the button to turn off music here. :)
         }
 
+        void settingsButton_Tapped(object sender, EventArgs e)
+        {
+            //BooleanButton button = sender as BooleanButton;
+
+            // In a real game, you'd want to store away the value of 
+            // the button to turn off music here. :)
+
+            //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new SettingsMainMenuScreen());
+            ScreenManager.AddScreen(new SettingsMainMenuScreen(), null);
+        }
+
+        
+
         protected override void OnCancel()
         {
             ScreenManager.Game.Exit();
+            
             base.OnCancel();
         }
     }

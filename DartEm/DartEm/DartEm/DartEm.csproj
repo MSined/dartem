@@ -91,6 +91,8 @@
     <Compile Include="ScreenManager\PhoneMenuScreen.cs" />
     <Compile Include="ScreenManager\PhonePauseScreen.cs" />
     <Compile Include="ScreenManager\PlayerIndexEventArgs.cs" />
+    <Compile Include="ScreenManager\SettingsMainMenuScreen.cs" />
+    <Compile Include="ScreenManager\SplashScreen.cs" />
     <None Include="Properties\AppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </None>
