@@ -134,8 +134,11 @@ namespace DartEm
         private void AddInitialScreens()
         {
             // Activate the first screens.
-            screenManager.AddScreen(new BackgroundScreen(), null);
-            screenManager.AddScreen(new PhoneMainMenuScreen(), null);
+            //screenManager.AddScreen(new BackgroundScreen(), null);
+            //screenManager.AddScreen(new PhoneMainMenuScreen(), null);
+
+            screenManager.AddScreen(new SplashScreen(), null);
+            //screenManager.AddScreen(new SplashScreen(), null);
         }
 
         /// <summary>
@@ -144,7 +147,7 @@ namespace DartEm
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
 

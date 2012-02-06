@@ -142,17 +142,17 @@ namespace DartEm
             if (IsActive)
             {
                 // Apply some random jitter to make the enemy move around.
-                const float randomization = 10;
+                //const float randomization = 10;
 
-                enemyPosition.X += (float)(random.NextDouble() - 0.5) * randomization;
-                enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
+                //enemyPosition.X += (float)(random.NextDouble() - 0.5) * randomization;
+                //enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
 
                 // Apply a stabilizing force to stop the enemy moving off the screen.
-                Vector2 targetPosition = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width / 2 - gameFont.MeasureString("Insert Gameplay Here").X / 2, 
-                    200);
+                //Vector2 targetPosition = new Vector2(
+                //    ScreenManager.GraphicsDevice.Viewport.Width / 2 - gameFont.MeasureString("Insert Gameplay Here").X / 2, 
+                //    200);
 
-                enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
+                //enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
 
                 // TODO: this game isn't very fun! You could probably improve
                 // it by inserting something more interesting in this space :-)
@@ -236,7 +236,7 @@ namespace DartEm
         {
             // This game has a blue background. Why? Because!
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                               Color.CornflowerBlue, 0, 0);
+                                               Color.Black, 0, 0);
 
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
