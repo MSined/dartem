@@ -34,6 +34,8 @@ namespace DartEm
         Vector2 playerPosition = new Vector2(100, 100);
         Vector2 enemyPosition = new Vector2(100, 100);
 
+        Texture2D picture;
+
         Random random = new Random();
 
         float pauseAlpha;
@@ -57,6 +59,10 @@ namespace DartEm
                 new Buttons[] { Buttons.Start, Buttons.Back },
                 new Keys[] { Keys.Escape },
                 true);
+
+            //picture = new Texture2D(ScreenManager.GraphicsDevice, 453, 501);
+
+            
         }
 
 
@@ -69,8 +75,8 @@ namespace DartEm
             {
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
-
                 gameFont = content.Load<SpriteFont>("gamefont");
+                picture = content.Load<Texture2D>(@"placeholder");
 
                 // A real game would probably have more content than this sample, so
                 // it would take longer to load. We simulate that by delaying for a
@@ -141,21 +147,21 @@ namespace DartEm
 
             if (IsActive)
             {
-                // Apply some random jitter to make the enemy move around.
+                //// Apply some random jitter to make the enemy move around.
                 //const float randomization = 10;
 
                 //enemyPosition.X += (float)(random.NextDouble() - 0.5) * randomization;
                 //enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
 
                 // Apply a stabilizing force to stop the enemy moving off the screen.
-                //Vector2 targetPosition = new Vector2(
-                //    ScreenManager.GraphicsDevice.Viewport.Width / 2 - gameFont.MeasureString("Insert Gameplay Here").X / 2, 
-                //    200);
+                Vector2 targetPosition = new Vector2(
+                    ScreenManager.GraphicsDevice.Viewport.Width / 2 - gameFont.MeasureString("Insert Gameplay Here").X / 2,
+                    200);
 
                 //enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
 
-                // TODO: this game isn't very fun! You could probably improve
-                // it by inserting something more interesting in this space :-)
+                //// TODO: this game isn't very fun! You could probably improve
+                //// it by inserting something more interesting in this space :-)
             }
         }
 
@@ -247,6 +253,8 @@ namespace DartEm
 
             spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
                                    enemyPosition, Color.DarkRed);
+
+            spriteBatch.Draw(picture, Vector2.Zero, Color.White);
 
             spriteBatch.End();
 
