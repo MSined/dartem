@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using DartEm;
 #endregion
 
@@ -33,8 +34,10 @@ namespace DartEm
 
         Vector2 playerPosition = new Vector2(100, 100);
         Vector2 enemyPosition = new Vector2(100, 100);
+        Vector2 dartPosition;
 
         Texture2D picture;
+        Texture2D dart;
 
         Random random = new Random();
 
@@ -61,7 +64,7 @@ namespace DartEm
                 true);
 
             //picture = new Texture2D(ScreenManager.GraphicsDevice, 453, 501);
-
+            
             
         }
 
@@ -77,6 +80,8 @@ namespace DartEm
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
                 gameFont = content.Load<SpriteFont>("gamefont");
                 picture = content.Load<Texture2D>(@"placeholder");
+                dart = content.Load<Texture2D>(@"Dart");
+                dartPosition = new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height / 2));
 
                 // A real game would probably have more content than this sample, so
                 // it would take longer to load. We simulate that by delaying for a
@@ -181,6 +186,20 @@ namespace DartEm
             KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
             GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
 
+
+            foreach (GestureSample gs in input.Gestures)
+            {
+                switch (gs.GestureType)
+                {
+                    case GestureType.Flick:
+                        dartPosition = new Vector2((float)(gs.Delta.X / (System.Math.Sqrt(Math.Pow(gs.Delta.X, 2) + Math.Pow(gs.Delta.Y, 2)))), (float)(gs.Delta.Y / (System.Math.Sqrt(Math.Pow(gs.Delta.X, 2) + Math.Pow(gs.Delta.Y, 2)))));
+                        dartPosition *= 30;
+
+                        System.Diagnostics.Debug.WriteLine("Bazinga!");
+                        break;
+                }
+            }
+            
             // The game pauses either if the user presses the pause button, or if
             // they unplug the active gamepad. This requires us to keep track of
             // whether a gamepad was ever plugged in, because we don't want to pause
@@ -231,7 +250,12 @@ namespace DartEm
                     movement.Normalize();
 
                 playerPosition += movement * 8f;
+
+                
             }
+
+            
+
         }
 
 
@@ -254,7 +278,8 @@ namespace DartEm
             spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
                                    enemyPosition, Color.DarkRed);
 
-            spriteBatch.Draw(picture, Vector2.Zero, Color.White);
+            spriteBatch.Draw(picture, new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (picture.Width/2), 0), Color.White);
+            spriteBatch.Draw(dart, dartPosition, Color.White);
 
             spriteBatch.End();
 
