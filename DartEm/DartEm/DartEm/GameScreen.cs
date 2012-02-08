@@ -200,7 +200,7 @@ namespace DartEm
             }
         }
 
-        GestureType enabledGestures = GestureType.None;
+        GestureType enabledGestures = GestureType.None | GestureType.Flick;
 
         /// <summary>
         /// Gets whether or not this screen is serializable. If this is true,
