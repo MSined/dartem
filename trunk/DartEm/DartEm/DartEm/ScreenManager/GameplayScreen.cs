@@ -35,6 +35,7 @@ namespace DartEm
         Vector2 playerPosition = new Vector2(100, 100);
         Vector2 enemyPosition = new Vector2(100, 100);
         Vector2 dartPosition;
+        Vector2 dartFlick;
 
         Texture2D picture;
         Texture2D dart;
@@ -44,6 +45,8 @@ namespace DartEm
         float pauseAlpha;
 
         InputAction pauseAction;
+
+        bool flicked;
 
         #endregion
 
@@ -63,7 +66,7 @@ namespace DartEm
                 new Keys[] { Keys.Escape },
                 true);
 
-            //picture = new Texture2D(ScreenManager.GraphicsDevice, 453, 501);
+            flicked = false;
             
             
         }
@@ -81,7 +84,7 @@ namespace DartEm
                 gameFont = content.Load<SpriteFont>("gamefont");
                 picture = content.Load<Texture2D>(@"placeholder");
                 dart = content.Load<Texture2D>(@"Dart");
-                dartPosition = new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height / 2));
+                dartPosition= new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
 
                 // A real game would probably have more content than this sample, so
                 // it would take longer to load. We simulate that by delaying for a
@@ -159,14 +162,27 @@ namespace DartEm
                 //enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
 
                 // Apply a stabilizing force to stop the enemy moving off the screen.
-                Vector2 targetPosition = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width / 2 - gameFont.MeasureString("Insert Gameplay Here").X / 2,
-                    200);
+                //Vector2 targetPosition = new Vector2(
+                //    ScreenManager.GraphicsDevice.Viewport.Width / 2 - gameFont.MeasureString("Insert Gameplay Here").X / 2,
+                //    200);
 
                 //enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
 
                 //// TODO: this game isn't very fun! You could probably improve
                 //// it by inserting something more interesting in this space :-)
+
+                if (flicked)
+                {
+                    dartPosition += dartFlick;
+                    dartFlick += new Vector2(0, 1f);
+                    System.Diagnostics.Debug.WriteLine(dartFlick);
+                    if (dartFlick.Y >= 0)
+                    {
+                        flicked = false;
+                    }
+                }
+
+
             }
         }
 
@@ -186,16 +202,18 @@ namespace DartEm
             KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
             GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
 
-
             foreach (GestureSample gs in input.Gestures)
             {
                 switch (gs.GestureType)
                 {
                     case GestureType.Flick:
-                        dartPosition = new Vector2((float)(gs.Delta.X / (System.Math.Sqrt(Math.Pow(gs.Delta.X, 2) + Math.Pow(gs.Delta.Y, 2)))), (float)(gs.Delta.Y / (System.Math.Sqrt(Math.Pow(gs.Delta.X, 2) + Math.Pow(gs.Delta.Y, 2)))));
-                        dartPosition *= 30;
+                        //dartPosition += (new Vector2((float)(gs.Delta.X / (System.Math.Sqrt(Math.Pow(gs.Delta.X, 2) + Math.Pow(gs.Delta.Y, 2)))), (float)(gs.Delta.Y / (System.Math.Sqrt(Math.Pow(gs.Delta.X, 2) + Math.Pow(gs.Delta.Y, 2)))))) * 30;
+                        //dartPosition *= 30;
+                        flicked = true;
+                        dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
+                        //System.Diagnostics.Debug.WriteLine("X: " + gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length() + ", Y:" + gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length());
+                        
 
-                        System.Diagnostics.Debug.WriteLine("Bazinga!");
                         break;
                 }
             }
@@ -273,10 +291,10 @@ namespace DartEm
 
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
+            //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
 
-            spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
-                                   enemyPosition, Color.DarkRed);
+            //spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
+            //                       enemyPosition, Color.DarkRed);
 
             spriteBatch.Draw(picture, new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (picture.Width/2), 0), Color.White);
             spriteBatch.Draw(dart, dartPosition, Color.White);
