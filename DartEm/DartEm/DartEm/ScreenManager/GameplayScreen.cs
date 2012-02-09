@@ -37,6 +37,8 @@ namespace DartEm
         Vector2 dartPosition;
         Vector2 dartFlick;
 
+        Rectangle dartStartLocation;
+
         Texture2D picture;
         Texture2D dart;
 
@@ -67,8 +69,6 @@ namespace DartEm
                 true);
 
             flicked = false;
-            
-            
         }
 
 
@@ -85,6 +85,7 @@ namespace DartEm
                 picture = content.Load<Texture2D>(@"placeholder");
                 dart = content.Load<Texture2D>(@"Dart");
                 dartPosition= new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
+                dartStartLocation = new Rectangle((ScreenManager.GraphicsDevice.Viewport.Width / 2) - ((dart.Width / 2)*5), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height), dart.Width*5, dart.Height);
 
                 // A real game would probably have more content than this sample, so
                 // it would take longer to load. We simulate that by delaying for a
@@ -174,9 +175,10 @@ namespace DartEm
                 if (flicked)
                 {
                     dartPosition += dartFlick;
+                    //dartFlick += new Vector2(0, Math.Abs(dartFlick.Y * 0.075f));
                     dartFlick += new Vector2(0, 1f);
                     System.Diagnostics.Debug.WriteLine(dartFlick);
-                    if (dartFlick.Y >= 0)
+                    if (dartFlick.Y >= -1.0)
                     {
                         flicked = false;
                     }
@@ -206,14 +208,17 @@ namespace DartEm
             {
                 switch (gs.GestureType)
                 {
-                    case GestureType.Flick:
-                        //dartPosition += (new Vector2((float)(gs.Delta.X / (System.Math.Sqrt(Math.Pow(gs.Delta.X, 2) + Math.Pow(gs.Delta.Y, 2)))), (float)(gs.Delta.Y / (System.Math.Sqrt(Math.Pow(gs.Delta.X, 2) + Math.Pow(gs.Delta.Y, 2)))))) * 30;
-                        //dartPosition *= 30;
-                        flicked = true;
-                        dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
-                        //System.Diagnostics.Debug.WriteLine("X: " + gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length() + ", Y:" + gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length());
-                        
-
+                    case GestureType.FreeDrag:
+                        if (dartStartLocation.Contains((int)gs.Position.X, (int)gs.Position.Y))
+                        {
+                            
+                            if (gs.Delta.Y < 0)
+                            {
+                                flicked = true;
+                                System.Diagnostics.Debug.WriteLine(gs.Delta);
+                                dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
+                            }
+                        }
                         break;
                 }
             }
