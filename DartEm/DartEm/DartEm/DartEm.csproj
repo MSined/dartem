@@ -70,6 +70,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dart.cs" />
     <Compile Include="GameScreen.cs" />
     <Compile Include="InputAction.cs" />
     <Compile Include="InputState.cs" />

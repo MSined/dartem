@@ -10,6 +10,7 @@
 #region Using Statements
 using System;
 using System.Threading;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,6 +37,14 @@ namespace DartEm
         Vector2 enemyPosition = new Vector2(100, 100);
         Vector2 dartPosition;
         Vector2 dartFlick;
+
+        //List<Vector2> dartPositions = new List<Vector2>();
+
+        //List<Texture2D> darts = new List<Texture2D>();
+
+        List<Dart> darts = new List<Dart>();
+
+        int activeDart = 0;
 
         Rectangle dartStartLocation;
 
@@ -84,7 +93,11 @@ namespace DartEm
                 gameFont = content.Load<SpriteFont>("gamefont");
                 picture = content.Load<Texture2D>(@"placeholder");
                 dart = content.Load<Texture2D>(@"Dart");
+
                 dartPosition= new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
+
+                darts.Add(new Dart(dartPosition));
+
                 dartStartLocation = new Rectangle((ScreenManager.GraphicsDevice.Viewport.Width / 2) - ((dart.Width / 2)*5), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height), dart.Width*5, dart.Height);
 
                 // A real game would probably have more content than this sample, so
@@ -174,13 +187,15 @@ namespace DartEm
 
                 if (flicked)
                 {
-                    dartPosition += dartFlick;
+                    //dartPosition += dartFlick;
+                    darts[activeDart].setPosition((darts[activeDart].getPosition() + dartFlick));
                     //dartFlick += new Vector2(0, Math.Abs(dartFlick.Y * 0.075f));
                     dartFlick += new Vector2(0, 1f);
                     System.Diagnostics.Debug.WriteLine(dartFlick);
                     if (dartFlick.Y >= -1.0)
                     {
                         flicked = false;
+                        resetDart();
                     }
                 }
 
@@ -188,6 +203,11 @@ namespace DartEm
             }
         }
 
+        public void resetDart()
+        {
+            darts.Add(new Dart(dartPosition));
+            activeDart++;
+        }
 
         /// <summary>
         /// Lets the game respond to player input. Unlike the Update method,
@@ -302,7 +322,12 @@ namespace DartEm
             //                       enemyPosition, Color.DarkRed);
 
             spriteBatch.Draw(picture, new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (picture.Width/2), 0), Color.White);
-            spriteBatch.Draw(dart, dartPosition, Color.White);
+            //spriteBatch.Draw(dart, dartPosition, Color.White);
+
+            foreach (Dart t in darts)
+            {
+                spriteBatch.Draw(dart, t.getPosition(), Color.White);
+            }
 
             spriteBatch.End();
 
