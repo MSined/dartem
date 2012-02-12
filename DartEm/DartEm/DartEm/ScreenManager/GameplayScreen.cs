@@ -37,6 +37,7 @@ namespace DartEm
         Vector2 enemyPosition = new Vector2(100, 100);
         Vector2 dartPosition;
         Vector2 dartFlick;
+        Vector2 touchOrigin;
 
         //List<Vector2> dartPositions = new List<Vector2>();
 
@@ -58,6 +59,7 @@ namespace DartEm
         InputAction pauseAction;
 
         bool flicked;
+        bool touched;
 
         #endregion
 
@@ -78,6 +80,7 @@ namespace DartEm
                 true);
 
             flicked = false;
+            touched = false;
         }
 
 
@@ -188,13 +191,16 @@ namespace DartEm
                 if (flicked)
                 {
                     //dartPosition += dartFlick;
+                    dartFlick = new Vector2(dartFlick.X, MathHelper.Clamp(dartFlick.Y, -36, 0));
+                    System.Diagnostics.Debug.WriteLine(dartFlick.Y);
                     darts[activeDart].setPosition((darts[activeDart].getPosition() + dartFlick));
                     //dartFlick += new Vector2(0, Math.Abs(dartFlick.Y * 0.075f));
                     dartFlick += new Vector2(0, 1f);
-                    System.Diagnostics.Debug.WriteLine(dartFlick);
+                    //System.Diagnostics.Debug.WriteLine(dartFlick);
                     if (dartFlick.Y >= -1.0)
                     {
                         flicked = false;
+                        touched = false;
                         resetDart();
                     }
                 }
@@ -231,15 +237,23 @@ namespace DartEm
                     case GestureType.FreeDrag:
                         if (dartStartLocation.Contains((int)gs.Position.X, (int)gs.Position.Y))
                         {
+                            touched = true;
                             
-                            if (gs.Delta.Y < 0)
-                            {
-                                flicked = true;
-                                System.Diagnostics.Debug.WriteLine(gs.Delta);
-                                dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
-                            }
                         }
+                        //System.Diagnostics.Debug.WriteLine("FreeDrag");
                         break;
+                    case GestureType.Flick:
+                        if (gs.Delta.Y < 0 && touched)
+                        {
+                            flicked = true;
+                            System.Diagnostics.Debug.WriteLine(gs.Delta);
+                            //dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
+                            dartFlick = gs.Delta / 100;
+                            System.Diagnostics.Debug.WriteLine(dartFlick);
+                        }
+                        //System.Diagnostics.Debug.WriteLine("Flick");
+                        break;
+
                 }
             }
             
