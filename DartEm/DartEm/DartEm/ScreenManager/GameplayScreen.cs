@@ -192,7 +192,7 @@ namespace DartEm
                 {
                     //dartPosition += dartFlick;
                     dartFlick = new Vector2(dartFlick.X, MathHelper.Clamp(dartFlick.Y, -36, 0));
-                    System.Diagnostics.Debug.WriteLine(dartFlick.Y);
+                    //System.Diagnostics.Debug.WriteLine(dartFlick.Y);
                     darts[activeDart].setPosition((darts[activeDart].getPosition() + dartFlick));
                     //dartFlick += new Vector2(0, Math.Abs(dartFlick.Y * 0.075f));
                     dartFlick += new Vector2(0, 1f);
@@ -246,10 +246,10 @@ namespace DartEm
                         if (gs.Delta.Y < 0 && touched)
                         {
                             flicked = true;
-                            System.Diagnostics.Debug.WriteLine(gs.Delta);
+                            //System.Diagnostics.Debug.WriteLine(gs.Delta);
                             //dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
                             dartFlick = gs.Delta / 100;
-                            System.Diagnostics.Debug.WriteLine(dartFlick);
+                            //System.Diagnostics.Debug.WriteLine(dartFlick);
                         }
                         //System.Diagnostics.Debug.WriteLine("Flick");
                         break;
