@@ -205,9 +205,11 @@ namespace DartEm
                 if (flicked)
                 {
                     //dartPosition += dartFlick;
-                    dartFlick = new Vector2(dartFlick.X, MathHelper.Clamp(dartFlick.Y, -36, 0));
+                    dartFlick = new Vector2(dartFlick.X, MathHelper.Clamp(dartFlick.Y, -35, 0));
                     //dartFlick = new Vector2(dartFlick.X, dartFlick.Y);
                     //System.Diagnostics.Debug.WriteLine(dartFlick.Y);
+
+                    //To fix, store dartFlick.Y in temp variable then scale according to % of Y vector in terms of temp (IE: dartFlick.Y / temp)
 
                     if (dartFlick.Y < -6)
                     {
@@ -294,7 +296,7 @@ namespace DartEm
                             flicked = true;
                             //System.Diagnostics.Debug.WriteLine(gs.Delta);
                             //dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
-                            dartFlick = gs.Delta / 100;
+                            dartFlick = gs.Delta / 150;
                             //System.Diagnostics.Debug.WriteLine(dartFlick);
                         }
                         //System.Diagnostics.Debug.WriteLine("Flick");
