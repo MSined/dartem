@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Phone.Tasks;
 using DartEm;
 #endregion
 
@@ -50,7 +51,7 @@ namespace DartEm
         Rectangle dartStartLocation;
 
         Texture2D picture;
-        Texture2D dart;
+        Texture2D dart, dart1, dart2, dart3, dart4, dart5, dart6;
 
         Random random = new Random();
 
@@ -60,6 +61,7 @@ namespace DartEm
 
         bool flicked;
         bool touched;
+
 
         #endregion
 
@@ -94,8 +96,17 @@ namespace DartEm
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
                 gameFont = content.Load<SpriteFont>("gamefont");
-                picture = content.Load<Texture2D>(@"placeholder");
-                dart = content.Load<Texture2D>(@"Dart");
+                picture = content.Load<Texture2D>("placeholder");
+                //dart = content.Load<Texture2D>("Dart");
+                dart = content.Load<Texture2D>("Dart");
+                dart1 = content.Load<Texture2D>("DartSprites/Dart1");
+                dart2 = content.Load<Texture2D>("DartSprites/Dart2");
+                dart3 = content.Load<Texture2D>("DartSprites/Dart3");
+                dart4 = content.Load<Texture2D>("DartSprites/Dart4");
+                dart5 = content.Load<Texture2D>("DartSprites/Dart5");
+                dart6 = content.Load<Texture2D>("DartSprites/Dart6");
+
+                
 
                 dartPosition= new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
 
@@ -188,11 +199,47 @@ namespace DartEm
                 //// TODO: this game isn't very fun! You could probably improve
                 //// it by inserting something more interesting in this space :-)
 
+
+                // This is the code to handle the forward motion of the darts.
+
                 if (flicked)
                 {
                     //dartPosition += dartFlick;
                     dartFlick = new Vector2(dartFlick.X, MathHelper.Clamp(dartFlick.Y, -36, 0));
+                    //dartFlick = new Vector2(dartFlick.X, dartFlick.Y);
                     //System.Diagnostics.Debug.WriteLine(dartFlick.Y);
+
+                    if (dartFlick.Y < -6)
+                    {
+                        darts[activeDart].setSpriteStage(1);
+                        //dart = dart1;
+                    }
+                    else if (dartFlick.Y < -5)
+                    {
+                        darts[activeDart].setSpriteStage(2);
+                        //dart = dart2;
+                    }
+                    else if (dartFlick.Y < -4)
+                    {
+                        darts[activeDart].setSpriteStage(3);
+                        //dart = dart3;
+                    }
+                    else if (dartFlick.Y < -3)
+                    {
+                        darts[activeDart].setSpriteStage(4);
+                        //dart = dart4;
+                    }
+                    else if (dartFlick.Y < -2)
+                    {
+                        darts[activeDart].setSpriteStage(5);
+                        //dart = dart5;
+                    }
+                    else if (dartFlick.Y < -1)
+                    {
+                        darts[activeDart].setSpriteStage(6);
+                        //dart = dart6;
+                    }
+
                     darts[activeDart].setPosition((darts[activeDart].getPosition() + dartFlick));
                     //dartFlick += new Vector2(0, Math.Abs(dartFlick.Y * 0.075f));
                     dartFlick += new Vector2(0, 1f);
@@ -202,6 +249,7 @@ namespace DartEm
                         flicked = false;
                         touched = false;
                         resetDart();
+                        dart = dart1;
                     }
                 }
 
@@ -238,9 +286,7 @@ namespace DartEm
                         if (dartStartLocation.Contains((int)gs.Position.X, (int)gs.Position.Y))
                         {
                             touched = true;
-                            
                         }
-                        //System.Diagnostics.Debug.WriteLine("FreeDrag");
                         break;
                     case GestureType.Flick:
                         if (gs.Delta.Y < 0 && touched)
@@ -340,6 +386,28 @@ namespace DartEm
 
             foreach (Dart t in darts)
             {
+                switch (t.getSpriteStage())
+                {
+                    case 1:
+                        dart = dart1;
+                        break;
+                    case 2:
+                        dart = dart2;
+                        break;
+                    case 3:
+                        dart = dart3;
+                        break;
+                    case 4:
+                        dart = dart4;
+                        break;
+                    case 5:
+                        dart = dart5;
+                        break;
+                    case 6:
+                        dart = dart6;
+                        break;
+
+                }
                 spriteBatch.Draw(dart, t.getPosition(), Color.White);
             }
 
