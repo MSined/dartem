@@ -16,8 +16,11 @@ namespace DartEm
     class Dart
     {
         private Vector2 position;
+        private int spriteStage;
+
         public Dart(Vector2 input)
         {
+            spriteStage = 1;
             position = input;
         }
         public void setPosition(Vector2 input)
@@ -27,6 +30,15 @@ namespace DartEm
         public Vector2 getPosition()
         {
             return position;
+        }
+
+        public void setSpriteStage(int input)
+        {
+            spriteStage = input;
+        }
+        public int getSpriteStage()
+        {
+            return spriteStage;
         }
     }
 }
