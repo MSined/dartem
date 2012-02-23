@@ -40,6 +40,8 @@ namespace DartEm
         Vector2 dartFlick;
         Vector2 touchOrigin;
 
+        float dartYHolder;
+
         //List<Vector2> dartPositions = new List<Vector2>();
 
         //List<Texture2D> darts = new List<Texture2D>();
@@ -211,32 +213,32 @@ namespace DartEm
 
                     //To fix, store dartFlick.Y in temp variable then scale according to % of Y vector in terms of temp (IE: dartFlick.Y / temp)
 
-                    if (dartFlick.Y < -6)
+                    if (dartFlick.Y / dartYHolder > 0.55f) //(dartFlick.Y < -6)
                     {
                         darts[activeDart].setSpriteStage(1);
                         //dart = dart1;
                     }
-                    else if (dartFlick.Y < -5)
+                    else if (dartFlick.Y / dartYHolder > 0.50f) //(dartFlick.Y < -5)
                     {
                         darts[activeDart].setSpriteStage(2);
                         //dart = dart2;
                     }
-                    else if (dartFlick.Y < -4)
+                    else if (dartFlick.Y / dartYHolder > 0.45f) //(dartFlick.Y < -4)
                     {
                         darts[activeDart].setSpriteStage(3);
                         //dart = dart3;
                     }
-                    else if (dartFlick.Y < -3)
+                    else if (dartFlick.Y / dartYHolder > 0.4f) //(dartFlick.Y < -3)
                     {
                         darts[activeDart].setSpriteStage(4);
                         //dart = dart4;
                     }
-                    else if (dartFlick.Y < -2)
+                    else if (dartFlick.Y / dartYHolder > 0.35f) //(dartFlick.Y < -2)
                     {
                         darts[activeDart].setSpriteStage(5);
                         //dart = dart5;
                     }
-                    else if (dartFlick.Y < -1)
+                    else if (dartFlick.Y / dartYHolder > 0.3f) //(dartFlick.Y < -1)
                     {
                         darts[activeDart].setSpriteStage(6);
                         //dart = dart6;
@@ -297,6 +299,7 @@ namespace DartEm
                             //System.Diagnostics.Debug.WriteLine(gs.Delta);
                             //dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
                             dartFlick = gs.Delta / 150;
+                            dartYHolder = dartFlick.Y;
                             //System.Diagnostics.Debug.WriteLine(dartFlick);
                         }
                         //System.Diagnostics.Debug.WriteLine("Flick");
