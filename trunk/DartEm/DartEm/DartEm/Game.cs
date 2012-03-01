@@ -118,11 +118,11 @@ namespace DartEm
         void GameActivated(object sender, Microsoft.Phone.Shell.ActivatedEventArgs e)
         {
             // Try to deserialize the screen manager
-            if (!screenManager.Activate(e.IsApplicationInstancePreserved))
-            {
+            //if (!screenManager.Activate(e.IsApplicationInstancePreserved))
+            //{
                 // If the screen manager fails to deserialize, add the initial screens
                 AddInitialScreens();
-            }
+            //}
         }
 
         void GameDeactivated(object sender, Microsoft.Phone.Shell.DeactivatedEventArgs e)

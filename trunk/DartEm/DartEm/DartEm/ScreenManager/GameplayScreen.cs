@@ -40,6 +40,8 @@ namespace DartEm
         Vector2 dartFlick;
         Vector2 touchOrigin;
 
+        Texture2D photo; 
+
         PhotoChooserTask photoChooserTask;
 
         float dartYHolder;
@@ -87,8 +89,17 @@ namespace DartEm
 
             flicked = false;
             touched = false;
+
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed); 
         }
 
+        void photoChooserTask_Completed(object sender, PhotoResult e)
+        {
+            if (e.TaskResult == TaskResult.OK)
+            {
+                photo = Texture2D.FromStream(ScreenManager.GraphicsDevice, e.ChosenPhoto, 780, 460, false);
+            }
+        }  
 
         /// <summary>
         /// Load graphics content for the game.
@@ -109,9 +120,6 @@ namespace DartEm
                 dart4 = content.Load<Texture2D>("DartSprites/Dart4");
                 dart5 = content.Load<Texture2D>("DartSprites/Dart5");
                 dart6 = content.Load<Texture2D>("DartSprites/Dart6");
-
-                photoChooserTask = new PhotoChooserTask();
-                //photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
 
                 dartPosition= new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
 
