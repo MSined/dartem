@@ -40,6 +40,8 @@ namespace DartEm
         Vector2 dartFlick;
         Vector2 touchOrigin;
 
+        PhotoChooserTask photoChooserTask;
+
         float dartYHolder;
 
         //List<Vector2> dartPositions = new List<Vector2>();
@@ -108,7 +110,8 @@ namespace DartEm
                 dart5 = content.Load<Texture2D>("DartSprites/Dart5");
                 dart6 = content.Load<Texture2D>("DartSprites/Dart6");
 
-                
+                photoChooserTask = new PhotoChooserTask();
+                //photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
 
                 dartPosition= new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
 
@@ -218,27 +221,27 @@ namespace DartEm
                         darts[activeDart].setSpriteStage(1);
                         //dart = dart1;
                     }
-                    else if (dartFlick.Y / dartYHolder > 0.50f) //(dartFlick.Y < -5)
+                    else if (dartFlick.Y / dartYHolder > 0.45f) //(dartFlick.Y < -5)
                     {
                         darts[activeDart].setSpriteStage(2);
                         //dart = dart2;
                     }
-                    else if (dartFlick.Y / dartYHolder > 0.45f) //(dartFlick.Y < -4)
+                    else if (dartFlick.Y / dartYHolder > 0.4f) //(dartFlick.Y < -4)
                     {
                         darts[activeDart].setSpriteStage(3);
                         //dart = dart3;
                     }
-                    else if (dartFlick.Y / dartYHolder > 0.4f) //(dartFlick.Y < -3)
+                    else if (dartFlick.Y / dartYHolder > 0.35f) //(dartFlick.Y < -3)
                     {
                         darts[activeDart].setSpriteStage(4);
                         //dart = dart4;
                     }
-                    else if (dartFlick.Y / dartYHolder > 0.35f) //(dartFlick.Y < -2)
+                    else if (dartFlick.Y / dartYHolder > 0.3f) //(dartFlick.Y < -2)
                     {
                         darts[activeDart].setSpriteStage(5);
                         //dart = dart5;
                     }
-                    else if (dartFlick.Y / dartYHolder > 0.3f) //(dartFlick.Y < -1)
+                    else if (dartFlick.Y / dartYHolder > 0.25f) //(dartFlick.Y < -1)
                     {
                         darts[activeDart].setSpriteStage(6);
                         //dart = dart6;
@@ -293,7 +296,7 @@ namespace DartEm
                         }
                         break;
                     case GestureType.Flick:
-                        if (gs.Delta.Y < 0 && touched)
+                        if (gs.Delta.Y < 0 && touched && !flicked)
                         {
                             flicked = true;
                             //System.Diagnostics.Debug.WriteLine(gs.Delta);
