@@ -40,10 +40,6 @@ namespace DartEm
         Vector2 dartFlick;
         Vector2 touchOrigin;
 
-        Texture2D photo; 
-
-        PhotoChooserTask photoChooserTask;
-
         float dartYHolder;
 
         //List<Vector2> dartPositions = new List<Vector2>();
@@ -67,6 +63,7 @@ namespace DartEm
 
         bool flicked;
         bool touched;
+        bool customPicture;
 
 
         #endregion
@@ -87,19 +84,28 @@ namespace DartEm
                 new Keys[] { Keys.Escape },
                 true);
 
+            customPicture = false;
             flicked = false;
             touched = false;
-
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed); 
         }
 
-        void photoChooserTask_Completed(object sender, PhotoResult e)
+        public GameplayScreen(Texture2D photo)
         {
-            if (e.TaskResult == TaskResult.OK)
-            {
-                photo = Texture2D.FromStream(ScreenManager.GraphicsDevice, e.ChosenPhoto, 780, 460, false);
-            }
-        }  
+            customPicture = true;
+
+            picture = photo;
+
+            TransitionOnTime = TimeSpan.FromSeconds(1.5);
+            TransitionOffTime = TimeSpan.FromSeconds(0.5);
+
+            pauseAction = new InputAction(
+                new Buttons[] { Buttons.Start, Buttons.Back },
+                new Keys[] { Keys.Escape },
+                true);
+
+            flicked = false;
+            touched = false;
+        }
 
         /// <summary>
         /// Load graphics content for the game.
@@ -111,7 +117,11 @@ namespace DartEm
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
                 gameFont = content.Load<SpriteFont>("gamefont");
-                picture = content.Load<Texture2D>("placeholder");
+
+                if (!customPicture)
+                {
+                    picture = content.Load<Texture2D>("placeholder");
+                }
                 //dart = content.Load<Texture2D>("Dart");
                 dart = content.Load<Texture2D>("Dart");
                 dart1 = content.Load<Texture2D>("DartSprites/Dart1");
