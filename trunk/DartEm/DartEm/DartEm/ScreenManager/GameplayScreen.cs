@@ -296,23 +296,23 @@ namespace DartEm
 
             Vector2 center = new Vector2(240f, 240f);
 
-            if ((Math.Pow((darts[activeDart].getPosition().X - center.X), 2)) + (Math.Pow((darts[activeDart].getPosition().Y - center.Y), 2)) < Math.Pow(targetRadius1, 2))
+            if ((Math.Pow(((darts[activeDart].getPosition().X + (dart6.Width / 2)) - center.X), 2)) + (Math.Pow(((darts[activeDart].getPosition().Y + (dart6.Height / 2)) - center.Y), 2)) < Math.Pow(targetRadius1, 2))
             {
                 score++;
             }
-            if ((Math.Pow((darts[activeDart].getPosition().X - center.X), 2)) + (Math.Pow((darts[activeDart].getPosition().Y - center.Y), 2)) < Math.Pow(targetRadius2, 2))
+            if ((Math.Pow(((darts[activeDart].getPosition().X + (dart6.Width / 2)) - center.X), 2)) + (Math.Pow(((darts[activeDart].getPosition().Y + (dart6.Height / 2)) - center.Y), 2)) < Math.Pow(targetRadius2, 2))
             {                                                                                                                                   
                 score++;                                                                                                                        
-            }                                                                                                                                   
-            if ((Math.Pow((darts[activeDart].getPosition().X - center.X), 2)) + (Math.Pow((darts[activeDart].getPosition().Y - center.Y), 2)) < Math.Pow(targetRadius3, 2))
+            }
+            if ((Math.Pow(((darts[activeDart].getPosition().X + (dart6.Width / 2)) - center.X), 2)) + (Math.Pow(((darts[activeDart].getPosition().Y + (dart6.Height / 2)) - center.Y), 2)) < Math.Pow(targetRadius3, 2))
             {                                                                                                                                   
                 score++;                                                                                                                        
-            }                                                                                                                                   
-            if ((Math.Pow((darts[activeDart].getPosition().X - center.X), 2)) + (Math.Pow((darts[activeDart].getPosition().Y - center.Y), 2)) < Math.Pow(targetRadius4, 2))
+            }
+            if ((Math.Pow(((darts[activeDart].getPosition().X + (dart6.Width / 2)) - center.X), 2)) + (Math.Pow(((darts[activeDart].getPosition().Y + (dart6.Height / 2)) - center.Y), 2)) < Math.Pow(targetRadius4, 2))
             {                                                                                                                                   
                 score++;                                                                                                                        
-            }                                                                                                                                   
-            if ((Math.Pow((darts[activeDart].getPosition().X - center.X), 2)) + (Math.Pow((darts[activeDart].getPosition().Y - center.Y), 2)) < Math.Pow(targetRadius5, 2))
+            }
+            if ((Math.Pow(((darts[activeDart].getPosition().X + (dart6.Width / 2)) - center.X), 2)) + (Math.Pow(((darts[activeDart].getPosition().Y + (dart6.Height / 2)) - center.Y), 2)) < Math.Pow(targetRadius5, 2))
             {
                 score++;
             }
