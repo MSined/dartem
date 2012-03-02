@@ -40,6 +40,8 @@ namespace DartEm
         Vector2 dartFlick;
         Vector2 touchOrigin;
 
+        int score = 0;
+
         float dartYHolder;
 
         //List<Vector2> dartPositions = new List<Vector2>();
@@ -52,7 +54,7 @@ namespace DartEm
 
         Rectangle dartStartLocation;
 
-        Texture2D picture;
+        Texture2D picture, bullseye;
         Texture2D dart, dart1, dart2, dart3, dart4, dart5, dart6;
 
         Random random = new Random();
@@ -91,8 +93,6 @@ namespace DartEm
 
         public GameplayScreen(Texture2D photo)
         {
-            customPicture = true;
-
             picture = photo;
 
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
@@ -102,7 +102,8 @@ namespace DartEm
                 new Buttons[] { Buttons.Start, Buttons.Back },
                 new Keys[] { Keys.Escape },
                 true);
-
+            
+            customPicture = true;
             flicked = false;
             touched = false;
         }
@@ -130,6 +131,8 @@ namespace DartEm
                 dart4 = content.Load<Texture2D>("DartSprites/Dart4");
                 dart5 = content.Load<Texture2D>("DartSprites/Dart5");
                 dart6 = content.Load<Texture2D>("DartSprites/Dart6");
+
+                bullseye = content.Load<Texture2D>("bullseye");
 
                 dartPosition= new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
 
@@ -273,12 +276,45 @@ namespace DartEm
                     {
                         flicked = false;
                         touched = false;
+                        calculateScore();
                         resetDart();
                         dart = dart1;
                     }
                 }
 
 
+            }
+        }
+
+        public void calculateScore()
+        {
+            int targetRadius1 = 48;
+            int targetRadius2 = 96;
+            int targetRadius3 = 144;
+            int targetRadius4 = 192;
+            int targetRadius5 = 240;
+
+            Vector2 center = new Vector2(240f, 240f);
+
+            if ((Math.Pow((darts[activeDart].getPosition().X - center.X), 2)) + (Math.Pow((darts[activeDart].getPosition().Y - center.Y), 2)) < Math.Pow(targetRadius1, 2))
+            {
+                score++;
+            }
+            if ((Math.Pow((darts[activeDart].getPosition().X - center.X), 2)) + (Math.Pow((darts[activeDart].getPosition().Y - center.Y), 2)) < Math.Pow(targetRadius2, 2))
+            {                                                                                                                                   
+                score++;                                                                                                                        
+            }                                                                                                                                   
+            if ((Math.Pow((darts[activeDart].getPosition().X - center.X), 2)) + (Math.Pow((darts[activeDart].getPosition().Y - center.Y), 2)) < Math.Pow(targetRadius3, 2))
+            {                                                                                                                                   
+                score++;                                                                                                                        
+            }                                                                                                                                   
+            if ((Math.Pow((darts[activeDart].getPosition().X - center.X), 2)) + (Math.Pow((darts[activeDart].getPosition().Y - center.Y), 2)) < Math.Pow(targetRadius4, 2))
+            {                                                                                                                                   
+                score++;                                                                                                                        
+            }                                                                                                                                   
+            if ((Math.Pow((darts[activeDart].getPosition().X - center.X), 2)) + (Math.Pow((darts[activeDart].getPosition().Y - center.Y), 2)) < Math.Pow(targetRadius5, 2))
+            {
+                score++;
             }
         }
 
@@ -314,10 +350,9 @@ namespace DartEm
                         }
                         break;
                     case GestureType.Flick:
-                        if (gs.Delta.Y < 0 && touched && !flicked)
+                        if (gs.Delta.Y < -900 && touched && !flicked)
                         {
                             flicked = true;
-                            //System.Diagnostics.Debug.WriteLine(gs.Delta);
                             //dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
                             dartFlick = gs.Delta / 150;
                             dartYHolder = dartFlick.Y;
@@ -408,6 +443,11 @@ namespace DartEm
             //                       enemyPosition, Color.DarkRed);
 
             spriteBatch.Draw(picture, new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (picture.Width/2), 0), Color.White);
+
+            spriteBatch.Draw(bullseye, new Vector2(0, 0), Color.White);
+
+            spriteBatch.DrawString(gameFont, "Score: " + score, Vector2.Zero, Color.DarkOliveGreen);
+
             //spriteBatch.Draw(dart, dartPosition, Color.White);
 
             foreach (Dart t in darts)
