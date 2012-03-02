@@ -10,11 +10,20 @@
 using System;
 using DartEm;
 using Microsoft.Xna.Framework;
+using Microsoft.Phone.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace DartEm
 {
     class PhoneMainMenuScreen : PhoneMenuScreen
     {
+
+        PhotoChooserTask photoChooserTask = new PhotoChooserTask();
+
+        Texture2D photo;
+
+        bool usingCustomPicture = false;
+
         public PhoneMainMenuScreen()
             : base("Main Menu")
         {
@@ -23,12 +32,19 @@ namespace DartEm
             playButton.Tapped += playButton_Tapped;
             MenuButtons.Add(playButton);
 
+            // Create Photo button
+            Button photosButton = new Button("Choose Photo");
+            photosButton.Tapped += photosButton_Tapped;
+            //ScreenManager.AddScreen(new SettingsMainMenuScreen(), );
+            MenuButtons.Add(photosButton);
+
             // Create Settings Menu
             Button settingsButton = new Button("Settings");
             settingsButton.Tapped += settingsButton_Tapped;
             //ScreenManager.AddScreen(new SettingsMainMenuScreen(), );
             MenuButtons.Add(settingsButton);
-            
+
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed); 
 
             //// Create two buttons to toggle sound effects and music. This sample just shows one way
             //// of making and using these buttons; it doesn't actually have sound effects or music
@@ -44,8 +60,29 @@ namespace DartEm
         void playButton_Tapped(object sender, EventArgs e)
         {
             // When the "Play" button is tapped, we load the GameplayScreen
-            LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen());
+            if(!usingCustomPicture)
+                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen());
+            else
+                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(photo));
+
         }
+
+        void photosButton_Tapped(object sender, EventArgs e)
+        {
+            // When the "Photos" button is tapped, we load the photoChooserTask
+            photoChooserTask.Show();
+        }
+
+        private void photoChooserTask_Completed(object sender, PhotoResult e)
+        {
+            if (e.TaskResult == TaskResult.OK)
+            {
+                usingCustomPicture = true;
+                photo = Texture2D.FromStream(ScreenManager.GraphicsDevice, e.ChosenPhoto);
+            }
+        }
+
+
 
         void sfxButton_Tapped(object sender, EventArgs e)
         {
