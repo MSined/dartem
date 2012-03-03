@@ -45,6 +45,32 @@ namespace DartEm
 
         }
 
+        public PhoneEndScreen(Texture2D input)
+            : base("End Game")
+        {
+            // Create the "Restart" and "Exit" buttons for the screen
+
+            Button resumeButton = new Button("New Game");
+            resumeButton.Tapped += restartButton_Tapped;
+            MenuButtons.Add(resumeButton);
+
+            // Create Photo button
+            Button photosButton = new Button("Use Custom Photo");
+            photosButton.Tapped += photosButton_Tapped;
+            //ScreenManager.AddScreen(new SettingsMainMenuScreen(), );
+            MenuButtons.Add(photosButton);
+
+            Button exitButton = new Button("Exit");
+            exitButton.Tapped += exitButton_Tapped;
+            MenuButtons.Add(exitButton);
+
+            photo = input;
+            usingCustomPicture = true;
+
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
+
+        }
+
         /// <summary>
         /// The "Resume" button handler just calls the OnCancel method so that 
         /// pressing the "Resume" button is the same as pressing the hardware back button.
@@ -85,22 +111,28 @@ namespace DartEm
 
         protected override void OnCancel()
         {
-            ExitScreen();
+            //ExitScreen();
+            LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(),
+                                                           new PhoneMainMenuScreen());
             base.OnCancel();
+
         }
 
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
-
-            if (usingCustomPicture)
+            if (!photo.IsDisposed)
             {
-                spriteBatch.Draw(photo, new Rectangle(90, 500, 300, 250), Color.White);
-            }
+                spriteBatch.Begin();
 
-            spriteBatch.End();
+                if (usingCustomPicture)
+                {
+                    spriteBatch.Draw(photo, new Rectangle(90, 500, 300, 250), Color.White);
+                }
+
+                spriteBatch.End();
+            }
 
             base.Draw(gameTime);
         }
