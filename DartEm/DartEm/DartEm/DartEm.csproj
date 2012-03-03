@@ -88,6 +88,7 @@
     <Compile Include="ScreenManager\MessageBoxScreen.cs" />
     <Compile Include="ScreenManager\OptionsMenuScreen.cs" />
     <Compile Include="ScreenManager\PauseMenuScreen.cs" />
+    <Compile Include="ScreenManager\PhoneEndScreen.cs" />
     <Compile Include="ScreenManager\PhoneMainMenuScreen.cs" />
     <Compile Include="ScreenManager\PhoneMenuScreen.cs" />
     <Compile Include="ScreenManager\PhonePauseScreen.cs" />

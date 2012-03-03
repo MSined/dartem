@@ -40,6 +40,8 @@ namespace DartEm
         Vector2 dartFlick;
         Vector2 touchOrigin;
 
+        int maxArrows = 10;
+
         int score = 0;
 
         float dartYHolder;
@@ -320,6 +322,12 @@ namespace DartEm
 
         public void resetDart()
         {
+            maxArrows--;
+            if (maxArrows == 0)
+            {
+                //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new PhoneEndScreen());
+                ScreenManager.AddScreen(new PhoneEndScreen(), ControllingPlayer);
+            }
             darts.Add(new Dart(dartPosition));
             activeDart++;
         }
