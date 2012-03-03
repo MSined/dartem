@@ -56,7 +56,7 @@ namespace DartEm
 
         Rectangle dartStartLocation;
 
-        Texture2D picture, bullseye;
+        Texture2D picture, bullseye, door;
         Texture2D dart, dart1, dart2, dart3, dart4, dart5, dart6;
 
         Random random = new Random();
@@ -133,6 +133,7 @@ namespace DartEm
                 dart4 = content.Load<Texture2D>("DartSprites/Dart4");
                 dart5 = content.Load<Texture2D>("DartSprites/Dart5");
                 dart6 = content.Load<Texture2D>("DartSprites/Dart6");
+                door = content.Load<Texture2D>("door");
 
                 bullseye = content.Load<Texture2D>("bullseye");
 
@@ -326,7 +327,7 @@ namespace DartEm
             if (maxArrows == 0)
             {
                 //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new PhoneEndScreen());
-                ScreenManager.AddScreen(new PhoneEndScreen(), ControllingPlayer);
+                ScreenManager.AddScreen(new PhoneEndScreen(picture), ControllingPlayer);
             }
             darts.Add(new Dart(dartPosition));
             activeDart++;
@@ -450,11 +451,16 @@ namespace DartEm
             //spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
             //                       enemyPosition, Color.DarkRed);
 
-            spriteBatch.Draw(picture, new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (picture.Width/2), 0), Color.White);
+            //spriteBatch.Draw(picture, new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (picture.Width/2), 0), Color.White);
+
+            spriteBatch.Draw(door, new Rectangle(0, 0, 480, 800), Color.White);            
+
+            spriteBatch.Draw(picture, new Rectangle(0, (240 - (int)((480f / picture.Width * picture.Height) /2)), 480, (int)(480f / picture.Width * picture.Height)), Color.White);
 
             spriteBatch.Draw(bullseye, new Vector2(0, 0), Color.White);
 
-            spriteBatch.DrawString(gameFont, "Score: " + score, Vector2.Zero, Color.DarkOliveGreen);
+            spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(0, 750), Color.Black);
+            spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(1, 749), Color.Gray);
 
             //spriteBatch.Draw(dart, dartPosition, Color.White);
 
