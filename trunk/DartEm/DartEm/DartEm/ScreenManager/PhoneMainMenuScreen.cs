@@ -12,6 +12,7 @@ using DartEm;
 using Microsoft.Xna.Framework;
 using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace DartEm
 {
@@ -33,7 +34,7 @@ namespace DartEm
             MenuButtons.Add(playButton);
 
             // Create Photo button
-            Button photosButton = new Button("Choose Photo");
+            Button photosButton = new Button("Use Custom Photo");
             photosButton.Tapped += photosButton_Tapped;
             //ScreenManager.AddScreen(new SettingsMainMenuScreen(), );
             MenuButtons.Add(photosButton);
@@ -118,6 +119,20 @@ namespace DartEm
             ScreenManager.Game.Exit();
             
             base.OnCancel();
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
+
+            spriteBatch.Begin();
+
+            if (usingCustomPicture)
+                spriteBatch.Draw(photo, new Rectangle(90, 500, 300, 250), Color.White);
+
+            spriteBatch.End();
+
+            base.Draw(gameTime);
         }
     }
 }
