@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Phone.Tasks;
 using DartEm;
@@ -58,6 +59,8 @@ namespace DartEm
 
         Texture2D picture, bullseye, door;
         Texture2D dart, dart1, dart2, dart3, dart4, dart5, dart6;
+
+        SoundEffect woosh;
 
         Random random = new Random();
 
@@ -136,6 +139,8 @@ namespace DartEm
                 door = content.Load<Texture2D>("door");
 
                 bullseye = content.Load<Texture2D>("bullseye");
+
+                woosh = content.Load<SoundEffect>("Sounds/woosh");
 
                 dartPosition= new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
 
@@ -365,6 +370,7 @@ namespace DartEm
                             //dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
                             dartFlick = gs.Delta / 150;
                             dartYHolder = dartFlick.Y;
+                            woosh.Play();
                             //System.Diagnostics.Debug.WriteLine(dartFlick);
                         }
                         //System.Diagnostics.Debug.WriteLine("Flick");
