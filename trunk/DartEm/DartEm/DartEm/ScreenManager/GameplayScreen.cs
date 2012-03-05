@@ -41,9 +41,13 @@ namespace DartEm
         Vector2 dartFlick;
         Vector2 touchOrigin;
 
+        string saveFileName = "HighScore";
+
         int maxArrows = 10;
 
         int score = 0;
+
+        int highScore = 0;
 
         float dartYHolder;
 
@@ -61,6 +65,8 @@ namespace DartEm
         Texture2D dart, dart1, dart2, dart3, dart4, dart5, dart6;
 
         SoundEffect woosh;
+
+        static DataSaver<int> MyDataSaver = new DataSaver<int>();
 
         Random random = new Random();
 
@@ -91,9 +97,12 @@ namespace DartEm
                 new Keys[] { Keys.Escape },
                 true);
 
+            loadHighScore();
+
             customPicture = false;
             flicked = false;
             touched = false;
+
         }
 
         public GameplayScreen(Texture2D photo)
@@ -107,7 +116,9 @@ namespace DartEm
                 new Buttons[] { Buttons.Start, Buttons.Back },
                 new Keys[] { Keys.Escape },
                 true);
-            
+
+            loadHighScore();
+
             customPicture = true;
             flicked = false;
             touched = false;
@@ -142,11 +153,11 @@ namespace DartEm
 
                 woosh = content.Load<SoundEffect>("Sounds/woosh");
 
-                dartPosition= new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
+                dartPosition = new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
 
                 darts.Add(new Dart(dartPosition));
 
-                dartStartLocation = new Rectangle((ScreenManager.GraphicsDevice.Viewport.Width / 2) - ((dart.Width / 2)*5), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height), dart.Width*5, dart.Height);
+                dartStartLocation = new Rectangle((ScreenManager.GraphicsDevice.Viewport.Width / 2) - ((dart.Width / 2) * 5), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height), dart.Width * 5, dart.Height);
 
                 // A real game would probably have more content than this sample, so
                 // it would take longer to load. We simulate that by delaying for a
@@ -290,7 +301,41 @@ namespace DartEm
                     }
                 }
 
+                checkHighScore();
+            }
+        }
 
+        public void saveScore()
+        {
+            int temp = MyDataSaver.LoadMyData(saveFileName);
+
+            //System.Diagnostics.Debug.WriteLine(temp);
+            if (temp != null)
+            {
+                if (temp < score)
+                {
+                    MyDataSaver.SaveMyData(score, saveFileName);
+                }
+            }
+        }
+
+        public void loadHighScore()
+        {
+            int temp = MyDataSaver.LoadMyData(saveFileName);
+
+            System.Diagnostics.Debug.WriteLine(temp);
+            if (temp != null)
+            {
+                highScore = temp;
+            }
+        }
+
+
+        public void checkHighScore()
+        {
+            if (highScore < score)
+            {
+                highScore = score;
             }
         }
 
@@ -309,16 +354,16 @@ namespace DartEm
                 score++;
             }
             if ((Math.Pow(((darts[activeDart].getPosition().X + (dart6.Width / 2)) - center.X), 2)) + (Math.Pow(((darts[activeDart].getPosition().Y + (dart6.Height / 2)) - center.Y), 2)) < Math.Pow(targetRadius2, 2))
-            {                                                                                                                                   
-                score++;                                                                                                                        
+            {
+                score++;
             }
             if ((Math.Pow(((darts[activeDart].getPosition().X + (dart6.Width / 2)) - center.X), 2)) + (Math.Pow(((darts[activeDart].getPosition().Y + (dart6.Height / 2)) - center.Y), 2)) < Math.Pow(targetRadius3, 2))
-            {                                                                                                                                   
-                score++;                                                                                                                        
+            {
+                score++;
             }
             if ((Math.Pow(((darts[activeDart].getPosition().X + (dart6.Width / 2)) - center.X), 2)) + (Math.Pow(((darts[activeDart].getPosition().Y + (dart6.Height / 2)) - center.Y), 2)) < Math.Pow(targetRadius4, 2))
-            {                                                                                                                                   
-                score++;                                                                                                                        
+            {
+                score++;
             }
             if ((Math.Pow(((darts[activeDart].getPosition().X + (dart6.Width / 2)) - center.X), 2)) + (Math.Pow(((darts[activeDart].getPosition().Y + (dart6.Height / 2)) - center.Y), 2)) < Math.Pow(targetRadius5, 2))
             {
@@ -333,6 +378,7 @@ namespace DartEm
             {
                 //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new PhoneEndScreen());
                 ScreenManager.AddScreen(new PhoneEndScreen(picture), ControllingPlayer);
+                saveScore();
             }
             darts.Add(new Dart(dartPosition));
             activeDart++;
@@ -378,7 +424,7 @@ namespace DartEm
 
                 }
             }
-            
+
             // The game pauses either if the user presses the pause button, or if
             // they unplug the active gamepad. This requires us to keep track of
             // whether a gamepad was ever plugged in, because we don't want to pause
@@ -430,10 +476,10 @@ namespace DartEm
 
                 playerPosition += movement * 8f;
 
-                
+
             }
 
-            
+
 
         }
 
@@ -450,54 +496,65 @@ namespace DartEm
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
-
-            //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
-
-            //spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
-            //                       enemyPosition, Color.DarkRed);
-
-            //spriteBatch.Draw(picture, new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (picture.Width/2), 0), Color.White);
-
-            spriteBatch.Draw(door, new Rectangle(0, 0, 480, 800), Color.White);            
-
-            spriteBatch.Draw(picture, new Rectangle(0, (240 - (int)((480f / picture.Width * picture.Height) /2)), 480, (int)(480f / picture.Width * picture.Height)), Color.White);
-
-            spriteBatch.Draw(bullseye, new Vector2(0, 0), Color.White);
-
-            spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(0, 750), Color.Black);
-            spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(1, 749), Color.Gray);
-
-            //spriteBatch.Draw(dart, dartPosition, Color.White);
-
-            foreach (Dart t in darts)
+            if (picture.IsDisposed)
             {
-                switch (t.getSpriteStage())
-                {
-                    case 1:
-                        dart = dart1;
-                        break;
-                    case 2:
-                        dart = dart2;
-                        break;
-                    case 3:
-                        dart = dart3;
-                        break;
-                    case 4:
-                        dart = dart4;
-                        break;
-                    case 5:
-                        dart = dart5;
-                        break;
-                    case 6:
-                        dart = dart6;
-                        break;
-
-                }
-                spriteBatch.Draw(dart, t.getPosition(), Color.White);
+                picture = content.Load<Texture2D>("placeholder");
             }
+            else
+            {
+                spriteBatch.Begin();
 
-            spriteBatch.End();
+                //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
+
+                //spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
+                //                       enemyPosition, Color.DarkRed);
+
+                //spriteBatch.Draw(picture, new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (picture.Width/2), 0), Color.White);
+
+                spriteBatch.Draw(door, new Rectangle(0, 0, 480, 800), Color.White);
+
+                spriteBatch.Draw(picture, new Rectangle(0, (240 - (int)((480f / picture.Width * picture.Height) / 2)), 480, (int)(480f / picture.Width * picture.Height)), Color.White);
+
+                spriteBatch.Draw(bullseye, new Vector2(0, 0), Color.White);
+
+                spriteBatch.DrawString(gameFont, "High Score: " + highScore, new Vector2(0, 701), Color.Black);
+                spriteBatch.DrawString(gameFont, "High Score: " + highScore, new Vector2(1, 700), Color.Gray);
+
+                spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(0, 750), Color.Black);
+                spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(1, 749), Color.Gray);
+
+                //spriteBatch.Draw(dart, dartPosition, Color.White);
+
+                foreach (Dart t in darts)
+                {
+                    switch (t.getSpriteStage())
+                    {
+                        case 1:
+                            dart = dart1;
+                            break;
+                        case 2:
+                            dart = dart2;
+                            break;
+                        case 3:
+                            dart = dart3;
+                            break;
+                        case 4:
+                            dart = dart4;
+                            break;
+                        case 5:
+                            dart = dart5;
+                            break;
+                        case 6:
+                            dart = dart6;
+                            break;
+
+                    }
+                    spriteBatch.Draw(dart, t.getPosition(), Color.White);
+                }
+
+                spriteBatch.End();
+
+            }
 
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0 || pauseAlpha > 0)
