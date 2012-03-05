@@ -63,6 +63,7 @@
     <Reference Include="Microsoft.Xna.Framework.Input.Touch" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
     <Reference Include="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -71,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dart.cs" />
+    <Compile Include="DataSaver.cs" />
     <Compile Include="GameScreen.cs" />
     <Compile Include="InputAction.cs" />
     <Compile Include="InputState.cs" />
