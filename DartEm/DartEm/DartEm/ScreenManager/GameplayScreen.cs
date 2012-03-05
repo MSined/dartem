@@ -322,8 +322,6 @@ namespace DartEm
         public void loadHighScore()
         {
             int temp = MyDataSaver.LoadMyData(saveFileName);
-
-            System.Diagnostics.Debug.WriteLine(temp);
             if (temp != null)
             {
                 highScore = temp;
