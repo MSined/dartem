@@ -24,6 +24,16 @@ namespace DartEm
         Texture2D photo;
 
         bool usingCustomPicture = false;
+        bool chooserChosen = false;
+        bool sfx = false;
+        bool music = false;
+
+
+        static DataSaver<int> MyDataSaver1 = new DataSaver<int>();
+        static DataSaver<int> MyDataSaver2 = new DataSaver<int>();
+
+        string sfxBoolFilename = "SfxBool";
+        string musicBoolFilename = "MusicBool";
 
         public PhoneMainMenuScreen()
             : base("Main Menu")
@@ -36,16 +46,16 @@ namespace DartEm
             // Create Photo button
             Button photosButton = new Button("Use Custom Photo");
             photosButton.Tapped += photosButton_Tapped;
-            //ScreenManager.AddScreen(new SettingsMainMenuScreen(), );
+            //ScreenManager.AddScreen(new PhoneSettingsMainMenuScreen(), );
             MenuButtons.Add(photosButton);
 
             // Create Settings Menu
             Button settingsButton = new Button("Settings");
             settingsButton.Tapped += settingsButton_Tapped;
-            //ScreenManager.AddScreen(new SettingsMainMenuScreen(), );
+            //ScreenManager.AddScreen(new PhoneSettingsMainMenuScreen(), );
             MenuButtons.Add(settingsButton);
 
-            photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed); 
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
 
             //// Create two buttons to toggle sound effects and music. This sample just shows one way
             //// of making and using these buttons; it doesn't actually have sound effects or music
@@ -60,30 +70,62 @@ namespace DartEm
 
         void playButton_Tapped(object sender, EventArgs e)
         {
+            // Check sound settings
+            int temp1 = MyDataSaver2.LoadMyData(sfxBoolFilename);
+            if (temp1 == 0 || temp1 == 1)
+            {
+                sfx = true;
+            }
+            else
+            {
+                sfx = false;
+            }
+
+            int temp2 = MyDataSaver2.LoadMyData(musicBoolFilename);
+            if (temp2 == 0 || temp2 == 1)
+            {
+                music = true;
+            }
+            else
+            {
+                music = false;
+            }
+
             // When the "Play" button is tapped, we load the GameplayScreen
             if(!usingCustomPicture)
-                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen());
+                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(sfx, music));
             else
-                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(photo));
+                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(photo, sfx, music));
 
         }
 
         void photosButton_Tapped(object sender, EventArgs e)
         {
             // When the "Photos" button is tapped, we load the photoChooserTask
-            photoChooserTask.Show();
+            if (!chooserChosen)
+                photoChooserTask.Show();
+            chooserChosen = true;
         }
 
         private void photoChooserTask_Completed(object sender, PhotoResult e)
         {
             if (e.TaskResult == TaskResult.OK)
             {
+                chooserChosen = false;
                 usingCustomPicture = true;
                 photo = Texture2D.FromStream(ScreenManager.GraphicsDevice, e.ChosenPhoto);
             }
         }
 
+        public void setSFX(bool input)
+        {
+            sfx = input;
+        }
 
+        public void setMusic(bool input)
+        {
+            music = input;
+        }
 
         void sfxButton_Tapped(object sender, EventArgs e)
         {
@@ -108,8 +150,8 @@ namespace DartEm
             // In a real game, you'd want to store away the value of 
             // the button to turn off music here. :)
 
-            //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new SettingsMainMenuScreen());
-            ScreenManager.AddScreen(new SettingsMainMenuScreen(), null);
+            //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new PhoneSettingsMainMenuScreen());
+            ScreenManager.AddScreen(new PhoneSettingsMainMenuScreen(), null);
         }
 
         

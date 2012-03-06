@@ -52,6 +52,11 @@ namespace DartEm
         {
             Text = string.Format("{0}: {1}", option, value ? "On" : "Off");
         }
+
+        public bool getBool()
+        {
+            return value;
+        }
     }
 
     /// <summary>

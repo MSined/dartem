@@ -77,6 +77,8 @@ namespace DartEm
         bool flicked;
         bool touched;
         bool customPicture;
+        bool music;
+        bool sfx;
 
 
         #endregion
@@ -87,7 +89,7 @@ namespace DartEm
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GameplayScreen()
+        public GameplayScreen(bool sfx, bool music)
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -102,10 +104,11 @@ namespace DartEm
             customPicture = false;
             flicked = false;
             touched = false;
-
+            this.sfx = sfx;
+            this.music = music;
         }
 
-        public GameplayScreen(Texture2D photo)
+        public GameplayScreen(Texture2D photo, bool sfx, bool music)
         {
             picture = photo;
 
@@ -122,6 +125,8 @@ namespace DartEm
             customPicture = true;
             flicked = false;
             touched = false;
+            this.sfx = sfx;
+            this.music = music;
         }
 
         /// <summary>
@@ -375,7 +380,7 @@ namespace DartEm
             if (maxArrows == 0)
             {
                 //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new PhoneEndScreen());
-                ScreenManager.AddScreen(new PhoneEndScreen(picture), ControllingPlayer);
+                ScreenManager.AddScreen(new PhoneEndScreen(picture, sfx, music), ControllingPlayer);
                 saveScore();
             }
             darts.Add(new Dart(dartPosition));
@@ -414,7 +419,8 @@ namespace DartEm
                             //dartFlick = new Vector2(gs.Delta.X / new Vector2(gs.Delta.X, gs.Delta.Y).Length(), gs.Delta.Y / new Vector2(gs.Delta.X, gs.Delta.Y).Length()) * 30;
                             dartFlick = gs.Delta / 150;
                             dartYHolder = dartFlick.Y;
-                            woosh.Play();
+                            if (sfx)
+                                woosh.Play();
                             //System.Diagnostics.Debug.WriteLine(dartFlick);
                         }
                         //System.Diagnostics.Debug.WriteLine("Flick");

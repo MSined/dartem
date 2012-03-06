@@ -54,8 +54,8 @@ namespace DartEm
         /// </summary>
         void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
-                               new GameplayScreen());
+            //LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
+            //                   new GameplayScreen());
         }
 
 
