@@ -531,11 +531,11 @@ namespace DartEm
                 spriteBatch.DrawString(gameFont, "Darts: " + maxDarts, new Vector2(300, 750), Color.Black);
                 spriteBatch.DrawString(gameFont, "Darts: " + maxDarts, new Vector2(301, 749), Color.Gray);
 
-                spriteBatch.DrawString(gameFont2, "High Score: " + highScore, new Vector2(0, 731), Color.Black);
-                spriteBatch.DrawString(gameFont2, "High Score: " + highScore, new Vector2(1, 730), Color.Gray);
+                spriteBatch.DrawString(gameFont2, "High Score: " + highScore, new Vector2(10, 731), Color.Black);
+                spriteBatch.DrawString(gameFont2, "High Score: " + highScore, new Vector2(11, 730), Color.Gray);
 
-                spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(0, 750), Color.Black);
-                spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(1, 749), Color.Gray);
+                spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(10, 750), Color.Black);
+                spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(11, 749), Color.Gray);
 
                 //spriteBatch.Draw(dart, dartPosition, Color.White);
 
