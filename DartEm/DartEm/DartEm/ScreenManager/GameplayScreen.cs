@@ -34,6 +34,7 @@ namespace DartEm
 
         ContentManager content;
         SpriteFont gameFont;
+        SpriteFont gameFont2;
 
         Vector2 playerPosition = new Vector2(100, 100);
         Vector2 enemyPosition = new Vector2(100, 100);
@@ -43,7 +44,7 @@ namespace DartEm
 
         string saveFileName = "HighScore";
 
-        int maxArrows = 10;
+        int maxDarts = 10;
 
         int score = 0;
 
@@ -61,10 +62,11 @@ namespace DartEm
 
         Rectangle dartStartLocation;
 
-        Texture2D picture, bullseye, door;
+        Texture2D picture, bullseye, door, door1;
         Texture2D dart, dart1, dart2, dart3, dart4, dart5, dart6;
 
         SoundEffect woosh;
+        SoundEffect applause;
 
         static DataSaver<int> MyDataSaver = new DataSaver<int>();
 
@@ -139,6 +141,7 @@ namespace DartEm
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
                 gameFont = content.Load<SpriteFont>("gamefont");
+                gameFont2 = content.Load<SpriteFont>("gamefont2");
 
                 if (!customPicture)
                 {
@@ -153,10 +156,13 @@ namespace DartEm
                 dart5 = content.Load<Texture2D>("DartSprites/Dart5");
                 dart6 = content.Load<Texture2D>("DartSprites/Dart6");
                 door = content.Load<Texture2D>("door");
+                door1 = content.Load<Texture2D>("door1");
 
                 bullseye = content.Load<Texture2D>("bullseye");
 
                 woosh = content.Load<SoundEffect>("Sounds/woosh");
+
+                applause = content.Load<SoundEffect>("Sounds/applause");
 
                 dartPosition = new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
 
@@ -320,6 +326,7 @@ namespace DartEm
                 if (temp < score)
                 {
                     MyDataSaver.SaveMyData(score, saveFileName);
+                    applause.Play();
                 }
             }
         }
@@ -376,8 +383,8 @@ namespace DartEm
 
         public void resetDart()
         {
-            maxArrows--;
-            if (maxArrows == 0)
+            maxDarts--;
+            if (maxDarts == 0)
             {
                 //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new PhoneEndScreen());
                 ScreenManager.AddScreen(new PhoneEndScreen(picture, sfx, music), ControllingPlayer);
@@ -518,11 +525,14 @@ namespace DartEm
                 spriteBatch.Draw(door, new Rectangle(0, 0, 480, 800), Color.White);
 
                 spriteBatch.Draw(picture, new Rectangle(0, (240 - (int)((480f / picture.Width * picture.Height) / 2)), 480, (int)(480f / picture.Width * picture.Height)), Color.White);
-
+                spriteBatch.Draw(door1, new Rectangle(0, 0, 480, 800), Color.White);
                 spriteBatch.Draw(bullseye, new Vector2(0, 0), Color.White);
 
-                spriteBatch.DrawString(gameFont, "High Score: " + highScore, new Vector2(0, 701), Color.Black);
-                spriteBatch.DrawString(gameFont, "High Score: " + highScore, new Vector2(1, 700), Color.Gray);
+                spriteBatch.DrawString(gameFont, "Darts: " + maxDarts, new Vector2(300, 750), Color.Black);
+                spriteBatch.DrawString(gameFont, "Darts: " + maxDarts, new Vector2(301, 749), Color.Gray);
+
+                spriteBatch.DrawString(gameFont2, "High Score: " + highScore, new Vector2(0, 731), Color.Black);
+                spriteBatch.DrawString(gameFont2, "High Score: " + highScore, new Vector2(1, 730), Color.Gray);
 
                 spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(0, 750), Color.Black);
                 spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(1, 749), Color.Gray);
