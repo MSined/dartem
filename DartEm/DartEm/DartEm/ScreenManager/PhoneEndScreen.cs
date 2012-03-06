@@ -22,7 +22,11 @@ namespace DartEm
         bool usingCustomPicture = false;
         Texture2D photo;
 
-        public PhoneEndScreen()
+        bool chooserChosen = false;
+        bool music;
+        bool sfx;
+
+        public PhoneEndScreen(bool sfx, bool music)
             : base("End Game")
         {
             // Create the "Restart" and "Exit" buttons for the screen
@@ -34,7 +38,7 @@ namespace DartEm
             // Create Photo button
             Button photosButton = new Button("Use Custom Photo");
             photosButton.Tapped += photosButton_Tapped;
-            //ScreenManager.AddScreen(new SettingsMainMenuScreen(), );
+            //ScreenManager.AddScreen(new PhoneSettingsMainMenuScreen(), );
             MenuButtons.Add(photosButton);
 
             Button exitButton = new Button("Exit");
@@ -42,10 +46,12 @@ namespace DartEm
             MenuButtons.Add(exitButton);
 
             photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
+            this.sfx = sfx;
+            this.music = music;
 
         }
 
-        public PhoneEndScreen(Texture2D input)
+        public PhoneEndScreen(Texture2D input, bool sfx, bool music)
             : base("End Game")
         {
             // Create the "Restart" and "Exit" buttons for the screen
@@ -57,7 +63,7 @@ namespace DartEm
             // Create Photo button
             Button photosButton = new Button("Use Custom Photo");
             photosButton.Tapped += photosButton_Tapped;
-            //ScreenManager.AddScreen(new SettingsMainMenuScreen(), );
+            //ScreenManager.AddScreen(new PhoneSettingsMainMenuScreen(), );
             MenuButtons.Add(photosButton);
 
             Button exitButton = new Button("Exit");
@@ -68,6 +74,8 @@ namespace DartEm
             usingCustomPicture = true;
 
             photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
+            this.sfx = sfx;
+            this.music = music;
 
         }
 
@@ -79,9 +87,9 @@ namespace DartEm
         {
             //OnCancel();
             if (!usingCustomPicture)
-                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen());
+                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(sfx, music));
             else
-                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(photo));
+                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(photo, sfx, music));
         }
 
         /// <summary>
@@ -96,13 +104,16 @@ namespace DartEm
         void photosButton_Tapped(object sender, EventArgs e)
         {
             // When the "Photos" button is tapped, we load the photoChooserTask
-            photoChooserTask.Show();
+            if (!chooserChosen)
+                photoChooserTask.Show();
+            chooserChosen = true;
         }
 
         private void photoChooserTask_Completed(object sender, PhotoResult e)
         {
             if (e.TaskResult == TaskResult.OK)
             {
+                chooserChosen = false;
                 usingCustomPicture = true;
                 photo = Texture2D.FromStream(ScreenManager.GraphicsDevice, e.ChosenPhoto);
             }
