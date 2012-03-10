@@ -133,12 +133,15 @@ namespace DartEm
             // Draw the menu title centered on the screen
             Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 80);
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
-            Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
+            Color titleColor = new Color(194, 124, 2) * TransitionAlpha;
+            Color titleColor2 = new Color(255, 212, 11) * TransitionAlpha;
             float titleScale = 1.25f;
 
             titlePosition.Y -= transitionOffset * 100;
 
             spriteBatch.DrawString(font, menuTitle, titlePosition, titleColor, 0, 
+                                   titleOrigin, titleScale, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, menuTitle, new Vector2(titlePosition.X + 1, titlePosition.Y + 1), titleColor2, 0,
                                    titleOrigin, titleScale, SpriteEffects.None, 0);
 
             spriteBatch.End();

@@ -528,14 +528,14 @@ namespace DartEm
                 spriteBatch.Draw(door1, new Rectangle(0, 0, 480, 800), Color.White);
                 spriteBatch.Draw(bullseye, new Vector2(0, 0), Color.White);
 
-                spriteBatch.DrawString(gameFont, "Darts: " + maxDarts, new Vector2(300, 750), Color.Black);
-                spriteBatch.DrawString(gameFont, "Darts: " + maxDarts, new Vector2(301, 749), Color.Gray);
+                spriteBatch.DrawString(gameFont, "Darts: " + maxDarts, new Vector2(300, 750), Color.Gray);
+                spriteBatch.DrawString(gameFont, "Darts: " + maxDarts, new Vector2(301, 749), Color.Black);
 
-                spriteBatch.DrawString(gameFont2, "High Score: " + highScore, new Vector2(10, 731), Color.Black);
-                spriteBatch.DrawString(gameFont2, "High Score: " + highScore, new Vector2(11, 730), Color.Gray);
+                spriteBatch.DrawString(gameFont2, "High Score: " + highScore, new Vector2(10, 721), Color.Gray);
+                spriteBatch.DrawString(gameFont2, "High Score: " + highScore, new Vector2(11, 720), Color.Black);
 
-                spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(10, 750), Color.Black);
-                spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(11, 749), Color.Gray);
+                spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(10, 750), Color.Gray);
+                spriteBatch.DrawString(gameFont, "Score: " + score, new Vector2(11, 749), Color.Black);
 
                 //spriteBatch.Draw(dart, dartPosition, Color.White);
 

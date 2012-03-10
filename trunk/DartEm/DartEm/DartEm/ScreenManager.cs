@@ -41,7 +41,7 @@ namespace DartEm
 
         SpriteBatch spriteBatch;
         SpriteFont font;
-        Texture2D blankTexture;
+        Texture2D blankTexture, buttonTexture;
 
         bool isInitialized;
 
@@ -92,6 +92,14 @@ namespace DartEm
             get { return blankTexture; }
         }
 
+        /// <summary>
+        /// Gets a button texture that can be used by the screens.
+        /// </summary>
+        public Texture2D ButtonTexture
+        {
+            get { return buttonTexture; }
+        }
+
 
         #endregion
 
@@ -132,6 +140,7 @@ namespace DartEm
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = content.Load<SpriteFont>("menufont");
             blankTexture = content.Load<Texture2D>("blank");
+            buttonTexture = content.Load<Texture2D>("button");
 
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)
