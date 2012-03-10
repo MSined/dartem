@@ -60,7 +60,7 @@ namespace DartEm
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-                backgroundTexture = content.Load<Texture2D>("Darts-800x480");
+                backgroundTexture = content.Load<Texture2D>("SplashScreen");
             }
         }
 

@@ -97,7 +97,12 @@ namespace DartEm
         /// <summary>
         /// The color of the text.
         /// </summary>
+        //public Color TextColor = Color.White;
+        //public Color TextColor = new Color(194, 124, 2);
+        //public Color TextColor2 = new Color(255, 212, 11);
+
         public Color TextColor = Color.White;
+        public Color TextColor2 = Color.Black;
 
         /// <summary>
         /// The opacity of the button.
@@ -155,7 +160,8 @@ namespace DartEm
             // Grab some common items from the ScreenManager
             SpriteBatch spriteBatch = screen.ScreenManager.SpriteBatch;
             SpriteFont font = screen.ScreenManager.Font;
-            Texture2D blank = screen.ScreenManager.BlankTexture;
+            //Texture2D blank = screen.ScreenManager.BlankTexture;
+            Texture2D button = screen.ScreenManager.ButtonTexture;
 
             // Compute the button's rectangle
             Rectangle r = new Rectangle(
@@ -164,26 +170,28 @@ namespace DartEm
                 (int)Size.X,
                 (int)Size.Y);
 
-            // Fill the button
-            spriteBatch.Draw(blank, r, FillColor * Alpha);
+            //// Fill the button
+            //spriteBatch.Draw(blank, r, FillColor * Alpha);
 
-            // Draw the border
-            spriteBatch.Draw(
-                blank, 
-                new Rectangle(r.Left, r.Top, r.Width, BorderThickness),
-                BorderColor * Alpha);
-            spriteBatch.Draw(
-                blank, 
-                new Rectangle(r.Left, r.Top, BorderThickness, r.Height),
-                BorderColor * Alpha);
-            spriteBatch.Draw(
-                blank, 
-                new Rectangle(r.Right - BorderThickness, r.Top, BorderThickness, r.Height),
-                BorderColor * Alpha);
-            spriteBatch.Draw(
-                blank, 
-                new Rectangle(r.Left, r.Bottom - BorderThickness, r.Width, BorderThickness),
-                BorderColor * Alpha);
+            //// Draw the border
+            //spriteBatch.Draw(
+            //    blank, 
+            //    new Rectangle(r.Left, r.Top, r.Width, BorderThickness),
+            //    BorderColor * Alpha);
+            //spriteBatch.Draw(
+            //    blank, 
+            //    new Rectangle(r.Left, r.Top, BorderThickness, r.Height),
+            //    BorderColor * Alpha);
+            //spriteBatch.Draw(
+            //    blank, 
+            //    new Rectangle(r.Right - BorderThickness, r.Top, BorderThickness, r.Height),
+            //    BorderColor * Alpha);
+            //spriteBatch.Draw(
+            //    blank, 
+            //    new Rectangle(r.Left, r.Bottom - BorderThickness, r.Width, BorderThickness),
+            //    BorderColor * Alpha);
+            spriteBatch.Draw(button, r, Color.White);
+
 
             // Draw the text centered in the button
             Vector2 textSize = font.MeasureString(Text);
@@ -191,6 +199,7 @@ namespace DartEm
             textPosition.X = (int)textPosition.X;
             textPosition.Y = (int)textPosition.Y;
             spriteBatch.DrawString(font, Text, textPosition, TextColor * Alpha);
+            spriteBatch.DrawString(font, Text, new Vector2(textPosition.X + 1, textPosition.Y + 1), TextColor2 * Alpha);
         }
     }
 }
