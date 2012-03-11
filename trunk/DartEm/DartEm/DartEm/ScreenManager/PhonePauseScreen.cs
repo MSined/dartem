@@ -14,8 +14,12 @@ namespace DartEm
     /// <summary>
     /// A basic pause screen for Windows Phone
     /// </summary>
+    ///     
+
     class PhonePauseScreen : PhoneMenuScreen
     {
+        public static bool isPaused;
+
         public PhonePauseScreen()
             : base("Paused")
         {
@@ -28,6 +32,8 @@ namespace DartEm
             Button exitButton = new Button("Exit");
             exitButton.Tapped += exitButton_Tapped;
             MenuButtons.Add(exitButton);
+
+            isPaused = true;
         }
 
         /// <summary>
@@ -37,6 +43,7 @@ namespace DartEm
         void resumeButton_Tapped(object sender, EventArgs e)
         {
             OnCancel();
+            isPaused = false;
         }
 
         /// <summary>

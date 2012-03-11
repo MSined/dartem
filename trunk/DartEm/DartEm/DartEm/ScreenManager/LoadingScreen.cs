@@ -142,17 +142,28 @@ namespace DartEm
 
                 const string message = "Loading...";
 
+                const string message1 = "How to play: \nSwipe darts toward the bullseye! \nSimple as that!";
+
                 // Center the text in the viewport.
                 Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
                 Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
                 Vector2 textSize = font.MeasureString(message);
                 Vector2 textPosition = (viewportSize - textSize) / 2;
 
+                // Center the text in the viewport.
+                Viewport viewport1 = ScreenManager.GraphicsDevice.Viewport;
+                Vector2 viewportSize1 = new Vector2(viewport1.Width, viewport1.Height);
+                Vector2 textSize1 = font.MeasureString(message1);
+                Vector2 textPosition1 = new Vector2();
+                textPosition1.X = (viewportSize1.X - textSize1.X) / 2;
+                textPosition1.Y = (viewportSize1.Y - textSize1.Y);
+
                 Color color = Color.White * TransitionAlpha;
 
                 // Draw the text.
                 spriteBatch.Begin();
                 spriteBatch.DrawString(font, message, textPosition, color);
+                spriteBatch.DrawString(font, message1, textPosition1, color);
                 spriteBatch.End();
             }
         }

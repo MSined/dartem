@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Phone.Tasks;
 using DartEm;
 #endregion
@@ -67,6 +68,8 @@ namespace DartEm
 
         SoundEffect woosh;
         SoundEffect applause;
+
+        Song bgmusic;
 
         static DataSaver<int> MyDataSaver = new DataSaver<int>();
 
@@ -164,6 +167,12 @@ namespace DartEm
 
                 applause = content.Load<SoundEffect>("Sounds/applause");
 
+                if (music)
+                {
+                    bgmusic = content.Load<Song>("Sounds/bgmusic");
+                    MediaPlayer.Play(bgmusic);
+                }
+
                 dartPosition = new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
 
                 darts.Add(new Dart(dartPosition));
@@ -230,6 +239,11 @@ namespace DartEm
                                                        bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, false);
+
+            if (MediaPlayer.State == MediaState.Paused && !PhonePauseScreen.isPaused)
+            {
+                MediaPlayer.Resume();
+            }
 
             // Gradually fade in or out depending on whether we are covered by the pause screen.
             if (coveredByOtherScreen)
@@ -389,6 +403,7 @@ namespace DartEm
                 //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new PhoneEndScreen());
                 ScreenManager.AddScreen(new PhoneEndScreen(picture, sfx, music), ControllingPlayer);
                 saveScore();
+                MediaPlayer.Stop();
             }
             darts.Add(new Dart(dartPosition));
             activeDart++;
@@ -447,7 +462,8 @@ namespace DartEm
             if (pauseAction.Evaluate(input, ControllingPlayer, out player) || gamePadDisconnected)
             {
 #if WINDOWS_PHONE
-                ScreenManager.AddScreen(new PhonePauseScreen(), ControllingPlayer);
+                    ScreenManager.AddScreen(new PhonePauseScreen(), ControllingPlayer);
+                    MediaPlayer.Pause();
 #else
                 ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
 #endif
