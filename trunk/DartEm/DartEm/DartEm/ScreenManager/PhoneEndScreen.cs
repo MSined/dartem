@@ -25,8 +25,9 @@ namespace DartEm
         bool chooserChosen = false;
         bool music;
         bool sfx;
+        bool zuneOverride;
 
-        public PhoneEndScreen(bool sfx, bool music)
+        public PhoneEndScreen(bool sfx, bool music, bool zune)
             : base("End Game")
         {
             // Create the "Restart" and "Exit" buttons for the screen
@@ -48,10 +49,10 @@ namespace DartEm
             photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
             this.sfx = sfx;
             this.music = music;
-
+            zuneOverride = zune;
         }
 
-        public PhoneEndScreen(Texture2D input, bool sfx, bool music)
+        public PhoneEndScreen(Texture2D input, bool sfx, bool music, bool zune)
             : base("End Game")
         {
             // Create the "Restart" and "Exit" buttons for the screen
@@ -76,7 +77,7 @@ namespace DartEm
             photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
             this.sfx = sfx;
             this.music = music;
-
+            zuneOverride = zune;
         }
 
         /// <summary>
@@ -87,9 +88,9 @@ namespace DartEm
         {
             //OnCancel();
             if (!usingCustomPicture)
-                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(sfx, music));
+                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(sfx, music, zuneOverride));
             else
-                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(photo, sfx, music));
+                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(photo, sfx, music, zuneOverride));
         }
 
         /// <summary>

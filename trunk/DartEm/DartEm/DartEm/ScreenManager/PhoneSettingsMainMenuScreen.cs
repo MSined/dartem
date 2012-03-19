@@ -11,8 +11,10 @@ namespace DartEm
     {
         string sfxBoolFilename = "SfxBool";
         string musicBoolFilename = "MusicBool";
+        string overrideBoolFilename = "overrideBool";
         static DataSaver<int> MyDataSaver1 = new DataSaver<int>(); // IMPORTANT: 0 = Not initiated, 1 = true, 2 = false;
         static DataSaver<int> MyDataSaver2 = new DataSaver<int>(); // IMPORTANT: 0 = Not initiated, 1 = true, 2 = false;
+        static DataSaver<int> MyDataSaver3 = new DataSaver<int>(); // IMPORTANT: 0 = Not initiated, 1 = true, 2 = false;
 
         public PhoneSettingsMainMenuScreen()
             : base("Settings Menu")
@@ -48,6 +50,20 @@ namespace DartEm
                 MenuButtons.Add(musicButton);
             }
 
+            int temp3 = MyDataSaver3.LoadMyData(overrideBoolFilename);
+            if (temp3 == 1)
+            {
+                BooleanButton overrideButton = new BooleanButton("Override Zune", true);
+                overrideButton.Tapped += overrideButton_Tapped;
+                MenuButtons.Add(overrideButton);
+            }
+            else
+            {
+                BooleanButton overrideButton = new BooleanButton("Override Zune", false);
+                overrideButton.Tapped += overrideButton_Tapped;
+                MenuButtons.Add(overrideButton);
+            }
+
             Button resetHighScore = new Button("Reset High Score");
             resetHighScore.Tapped += resetHighScore_Tapped;
             MenuButtons.Add(resetHighScore);
@@ -77,9 +93,18 @@ namespace DartEm
         {
             BooleanButton button = sender as BooleanButton;
             if (button.getBool())
-                MyDataSaver1.SaveMyData(1, sfxBoolFilename);   
+                MyDataSaver1.SaveMyData(1, sfxBoolFilename);
             else
                 MyDataSaver1.SaveMyData(2, sfxBoolFilename);   
+        }
+
+        void overrideButton_Tapped(object sender, EventArgs e)
+        {
+            BooleanButton button = sender as BooleanButton;
+            if (button.getBool())
+                MyDataSaver3.SaveMyData(1, overrideBoolFilename);
+            else
+                MyDataSaver3.SaveMyData(2, overrideBoolFilename);
         }
 
         void resetHighScore_Tapped(object sender, EventArgs e)
