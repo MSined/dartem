@@ -27,13 +27,16 @@ namespace DartEm
         bool chooserChosen = false;
         bool sfx = false;
         bool music = false;
+        bool overrideZune = false;
 
 
         static DataSaver<int> MyDataSaver1 = new DataSaver<int>();
         static DataSaver<int> MyDataSaver2 = new DataSaver<int>();
+        static DataSaver<int> MyDataSaver3 = new DataSaver<int>();
 
         string sfxBoolFilename = "SfxBool";
         string musicBoolFilename = "MusicBool";
+        string overrideBoolFilename = "overrideBool";
 
         public PhoneMainMenuScreen()
             : base("Main Menu")
@@ -91,11 +94,21 @@ namespace DartEm
                 music = false;
             }
 
+            int temp3 = MyDataSaver3.LoadMyData(overrideBoolFilename);
+            if (temp3 == 1)
+            {
+                overrideZune = true;
+            }
+            else
+            {
+                overrideZune = false;
+            }
+
             // When the "Play" button is tapped, we load the GameplayScreen
             if(!usingCustomPicture)
-                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(sfx, music));
+                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(sfx, music, overrideZune));
             else
-                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(photo, sfx, music));
+                LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen(photo, sfx, music, overrideZune));
 
         }
 

@@ -84,6 +84,7 @@ namespace DartEm
         bool customPicture;
         bool music;
         bool sfx;
+        bool zuneOverride;
 
 
         #endregion
@@ -94,7 +95,7 @@ namespace DartEm
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GameplayScreen(bool sfx, bool music)
+        public GameplayScreen(bool sfx, bool music, bool zune)
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -111,9 +112,10 @@ namespace DartEm
             touched = false;
             this.sfx = sfx;
             this.music = music;
+            zuneOverride = zune;
         }
 
-        public GameplayScreen(Texture2D photo, bool sfx, bool music)
+        public GameplayScreen(Texture2D photo, bool sfx, bool music, bool zune)
         {
             picture = photo;
 
@@ -132,6 +134,7 @@ namespace DartEm
             touched = false;
             this.sfx = sfx;
             this.music = music;
+            zuneOverride = zune;
         }
 
         /// <summary>
@@ -169,8 +172,16 @@ namespace DartEm
 
                 if (music)
                 {
-                    bgmusic = content.Load<Song>("Sounds/bgmusic");
-                    MediaPlayer.Play(bgmusic);
+                    if (!MediaPlayer.GameHasControl && zuneOverride)
+                    {
+                        bgmusic = content.Load<Song>("Sounds/bgmusic");
+                        MediaPlayer.Play(bgmusic);
+                    }
+                    else if (MediaPlayer.GameHasControl)
+                    {
+                        bgmusic = content.Load<Song>("Sounds/bgmusic");
+                        MediaPlayer.Play(bgmusic);
+                    }
                 }
 
                 dartPosition = new Vector2((ScreenManager.GraphicsDevice.Viewport.Width / 2) - (dart.Width / 2), (ScreenManager.GraphicsDevice.Viewport.Height) - (dart.Height));
@@ -242,7 +253,8 @@ namespace DartEm
 
             if (MediaPlayer.State == MediaState.Paused && !PhonePauseScreen.isPaused)
             {
-                MediaPlayer.Resume();
+                if (MediaPlayer.GameHasControl)
+                    MediaPlayer.Resume();
             }
 
             // Gradually fade in or out depending on whether we are covered by the pause screen.
@@ -401,9 +413,10 @@ namespace DartEm
             if (maxDarts == 0)
             {
                 //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new PhoneEndScreen());
-                ScreenManager.AddScreen(new PhoneEndScreen(picture, sfx, music), ControllingPlayer);
+                ScreenManager.AddScreen(new PhoneEndScreen(picture, sfx, music, zuneOverride), ControllingPlayer);
                 saveScore();
-                MediaPlayer.Stop();
+                if (MediaPlayer.GameHasControl)
+                    MediaPlayer.Stop();
             }
             darts.Add(new Dart(dartPosition));
             activeDart++;
@@ -463,7 +476,8 @@ namespace DartEm
             {
 #if WINDOWS_PHONE
                     ScreenManager.AddScreen(new PhonePauseScreen(), ControllingPlayer);
-                    MediaPlayer.Pause();
+                    if (MediaPlayer.GameHasControl)
+                        MediaPlayer.Pause();
 #else
                 ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
 #endif
